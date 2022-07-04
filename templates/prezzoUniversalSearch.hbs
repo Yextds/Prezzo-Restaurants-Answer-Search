@@ -1,0 +1,197 @@
+---
+{
+    "urlFormat": "index.html"
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Answers Test Experience</title>
+    <!-- Answers CSS-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://assets.sitescdn.net/answers/v1/answers.css"
+    />
+
+    <!-- Answers Layout styling -->
+    <style>
+      .answers-layout {
+        max-width: 50rem;
+        margin: auto;
+      }
+    </style>
+
+    <!-- Answers JS-->
+    <script src="https://assets.sitescdn.net/answers/v1/answers.min.js"></script>
+  </head>
+  <body>
+  <div class="answers-layout">
+    <div class="searchbar-container"></div>
+    <div class="navigation-container"></div>
+    <div class="map-container"></div>
+    <div class="directanswer-container"></div>
+    <div class="spellcheck-container"></div>
+    <div class="universal-container"></div>
+    <div class="locationbias-container"></div>
+  </div>
+
+  <script>
+    ANSWERS.init({
+      apiKey: "sandbox-cc8b0bde99d9d71f0f7a6fa03200807b",
+      experienceKey: "prezzo-resturants",
+      businessId: "2679138",
+      experienceVersion: "PRODUCTION",
+    /*Navbar section code starts from here*/
+        
+      verticalPages: [
+          {
+            label: "All",
+            url: "./index.html",
+            hideInNavigation: false,
+            isFirst: true,
+            isActive: true,
+            icon: "star"
+          },
+          {
+            verticalKey: "prezzo_menu_items", // optional, the vertical key
+            label: "Menu Items", // The label used for the navigation element
+            url: "http://192.168.3.180:8000/menu-items-vertical.html" // The link for the navigation element
+          },
+          {
+            verticalKey: "prezzo_faqs", // optional, the vertical key
+            label: "FAQs", // The label used for the navigation element
+            url: "http://192.168.3.180:8000/faqs-vertical.html" // The link for the navigation element
+          },
+          {
+            verticalKey: "prezzo_offers",
+            label: "Offers",
+            url: "http://192.168.3.180:8000/prezzo-offers-vertical.html",
+            hideInNavigation: false,
+            icon: "calendar"
+          },
+          {
+            verticalKey: "locations",
+            label: "Locations",
+            url: "http://192.168.3.180:8000/locations-vertical.html",
+            hideInNavigation: false,
+            icon: "calendar"
+          }
+        ],
+
+         search: {
+      verticalKey: "prezzo_menu_items",
+      defaultInitialSearch: "Menu Items",
+
+      limit: 10,
+       universalLimit: {
+        prezzo_offers: 2,
+        prezzo_menu_items:4
+      },
+    },
+
+    /*Navbar section code ends here*/  
+      onReady: function () {
+        // init components
+        this.addComponent("SearchBar", {
+          container: ".searchbar-container",
+          allowEmptySearch: true
+        });
+        this.addComponent("Navigation", {
+          container: ".navigation-container",
+        });
+        this.addComponent("SpellCheck", {
+          container: ".spellcheck-container",
+        });
+        this.addComponent("DirectAnswer", {
+          container: ".directanswer-container",
+        });
+        this.addComponent("UniversalResults", {
+          container: ".universal-container",
+          config: {
+            prezzo_menu_items: {
+              title: "Menu Items",
+              icon: "",
+              limit: '2',
+              card: {
+                cardType: "Standard",
+                dataMappings: {
+                  title: (item) => item.name,
+                  subtitle: (item) => item.c_allergence,
+                  details: (item) => item.shortDescription+'<br><h3>Type:</h3>'+item.c_foodType +'<br><h4>Price:</h4>'+item.c_price1,
+                  image: (item) =>
+                    item.photoGallery ? item.photoGallery[0].image.url : null,
+                  url: "#"
+                },
+                callsToAction: [
+                  {
+                    label: "Order Now",
+                    icon: "briefcase",
+                    url: "#",
+                    analyticsEventType: "GET_DIRECTIONS",
+                    target: "_self"
+                  }
+                ]
+              }
+            },
+            prezzo_faqs: {
+              icon: "support",
+              title: "FAQs",
+              limit: '2',
+              card: {
+                cardType: "Accordion",
+                dataMappings: {
+                  title: (item) => item.question,
+                  details: (item) => item.answer,
+                  url: "#"
+                }
+              }
+            },
+            prezzo_offers: {
+              title: "Offers",
+              icon: "briefcase",
+              limit: '2',
+              card: {
+                cardType: "Accordion",
+                dataMappings: {
+                  title: (item) => item.name,
+                  // subtitle: (item) => `Date Posted: ${item.datePosted}`,
+                  details: (item) => item.c_prezzoOffersPoints,
+                  url: "#"
+                }
+              }
+            },
+            locations: {
+              icon: "briefcase",
+              limit: '2',
+              card: {
+                cardType: "Standard",
+                dataMappings: {
+                  title: (item) => item.name,
+                  // subtitle: (item) => `Date Posted: ${item.datePosted}`,
+                  details: (item) => item.address.line1,
+                  url: "#"
+                }
+              }
+            }
+          }
+        });
+        this.addComponent("Map", {
+            container: ".map-container",
+            mapProvider: "mapbox",
+            height: "35%",
+            width: "100%",
+            showEmptyMap: false,
+            verticalKey: "locations",
+            apiKey:
+              "pk.eyJ1IjoieWV4dCIsImEiOiJqNzVybUhnIn0.hTOO5A1yqfpN42-_z_GuLw"
+         });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+---
+{
+    "urlFormat": "faqs-vertical.html"
+}
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>FAQs Verticals</title>
+    <!-- JS Links -->
+    <script src="https://assets.sitescdn.net/answers/v1/answerstemplates.compiled.min.js"></script>
+    <script src="https://assets.sitescdn.net/answers/v1/answers.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://assets.sitescdn.net/answers/v1/answers.css"
+    />
+
+    <!-- layout styling -->
+    <style>
+      .answers-layout {
+        max-width: 50rem;
+        margin: auto;
+      }
+      .filters-and-results-layout {
+        display: flex;
+        max-width: 70rem;
+        margin: auto;
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="answers-layout">
+      <div class="searchbar-layout">
+        <div class="searchbar-container"></div>
+        <div class="navigation-container"></div>
+      </div>
+      <div class="filters-and-results-layout">
+        <div class="facets-container"></div>
+        <div class="results-layout">
+          <div class="spellcheck-container"></div>
+          <div class="vertical-container"></div>
+          <div class="locationbias-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      ANSWERS.init({
+        apiKey: "sandbox-cc8b0bde99d9d71f0f7a6fa03200807b",
+        experienceKey: "prezzo-resturants",
+        businessId: "2679138",
+        experienceVersion: "PRODUCTION",
+        verticalKey: "prezzo_menu_items",
+        // search: {
+        //   verticalKey: "locations",
+        //   defaultInitialSearch:
+        //     "locations that take mastercard and offer free wifi",
+        //   limit: 20
+        // },
+         verticalPages: [
+          {
+            label: "All",
+            url: "./index.html",
+            hideInNavigation: false,
+            isFirst: true,
+            icon: "star"
+          },
+          {
+            verticalKey: "prezzo_menu_items", // optional, the vertical key
+            label: "Menu Items", // The label used for the navigation element
+            url: "http://192.168.3.180:8000/menu-items-vertical.html" // The link for the navigation element
+          },
+          {
+            verticalKey: "prezzo_faqs", // optional, the vertical key
+            label: "FAQs", // The label used for the navigation element
+            isActive: true,
+            url: "http://192.168.3.180:8000/faqs-vertical.html" // The link for the navigation element
+          },
+          {
+            verticalKey: "prezzo_offers",
+            label: "Offers",
+            url: "http://192.168.3.180:8000/prezzo-offers-vertical.html",
+            hideInNavigation: false,
+            icon: "calendar"
+          },
+          {
+            verticalKey: "locations",
+            label: "Locations",
+            url: "http://192.168.3.180:8000/locations-vertical.html",
+            hideInNavigation: false,
+            icon: "calendar"
+          }
+        ],
+        onReady: function () {
+          // init components
+          this.addComponent("SearchBar", {
+            container: ".searchbar-container",
+            verticalKey: "prezzo_faqs"
+          });
+          this.addComponent("Navigation", {
+            container: ".navigation-container"
+          });
+          this.addComponent("SpellCheck", {
+            container: ".spellcheck-container"
+          });
+        /*Facets code starts here*/
+          // this.addComponent("Facets", {
+          //   container: ".facets-container",
+          //   verticalKey: "prezzo_menu_items",
+          //   searchOnChange: true
+          // });
+        /*Facets code ends here*/
+          this.addComponent("VerticalResults", {
+            container: ".vertical-container",
+            verticalKey: "prezzo_faqs",
+            card: {
+              cardType: "Accordion",
+             dataMappings: {
+                  title: (item) => item.question,
+                  details: (item) => item.answer,
+                  url: "#"
+                }
+            }
+          });
+          this.addComponent("LocationBias", {
+            container: ".locationbias-container"
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

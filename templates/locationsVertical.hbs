@@ -1,0 +1,205 @@
+---
+{
+    "urlFormat": "locations-vertical.html"
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Locations Vertical</title>
+    <!-- JS Links -->
+    <script src="https://assets.sitescdn.net/answers/v1/answerstemplates.compiled.min.js"></script>
+    <script src="https://assets.sitescdn.net/answers/v1/answers.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://assets.sitescdn.net/answers/v1/answers.css"
+    />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- layout styling -->
+    <style>
+      .answers {
+        max-width: 50rem;
+        margin: auto;
+      }
+      .map > * {
+        position: unset !important;
+      }
+
+      .mapboxgl-map {
+        min-height: 59.375rem;
+      }
+
+      .searchbar-container {
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="answers">
+      <div class="searchbar-container"></div>
+      <div class="navigation-container"></div>
+      <div class="map-container" style="min-height: 19.375rem;"></div>
+      <div class="infowindow" id="infoWindow"></div>
+      <!-- <div id="map-info"></div> -->
+       <div class="filters-and-results-layout">
+        <div class="facets-container"></div>
+        <div class="sort-options-container"></div>
+        <div class="results-layout">
+          <div class="spellcheck-container"></div>
+          <div class="vertical-container"></div>
+          
+          <div class="locationbias-container"></div>
+        </div>
+      </div>
+      
+    </div>
+    </div>
+    <script>
+      ANSWERS.init({
+      /*Configurations of Answer Experience*/
+
+        apiKey: "sandbox-cc8b0bde99d9d71f0f7a6fa03200807b",
+        experienceKey: "prezzo-resturants",
+        businessId: "2679138",
+        verticalKey: "locations",
+        experienceVersion: "PRODUCTION",
+        search: {
+          verticalKey: "locations",
+          defaultInitialSearch: "Locations"
+        },
+
+      /*Configurations of Answer Experience*/
+
+        /*Navigation menus code starts here*/
+
+          verticalPages: [
+          {
+            label: "All",
+            url: "./index.html",
+            hideInNavigation: false,
+            
+            icon: "star"
+          },
+          {
+            verticalKey: "prezzo_menu_items", // optional, the vertical key
+            label: "Menu Items", // The label used for the navigation element
+            url: "http://192.168.3.180:8000/menu-items-vertical.html" // The link for the navigation element
+          },
+          {
+            verticalKey: "prezzo_faqs", // optional, the vertical key
+            label: "FAQs", // The label used for the navigation element
+            url: "http://192.168.3.180:8000/faqs-vertical.html" // The link for the navigation element
+          },
+          {
+            verticalKey: "prezzo_offers",
+            label: "Offers",
+            url: "http://192.168.3.180:8000/prezzo-offers-vertical.html",
+            hideInNavigation: false,
+            icon: "calendar"
+          },
+          {
+            verticalKey: "locations",
+            label: "Locations",
+            url: "http://192.168.3.180:8000/locations-vertical.html",
+            hideInNavigation: false,
+            isActive: true,
+            icon: "calendar"
+          }
+        ],
+
+      /*Navigation menus code ends here*/
+ 
+        onReady: function () {
+          // init components
+          this.addComponent("SearchBar", {
+            container: ".searchbar-container",
+            allowEmptySearch: true,
+            verticalKey: "locations"
+          });
+           this.addComponent("Navigation", {
+            container: ".navigation-container"
+          });
+           this.addComponent("SpellCheck", {
+            container: ".spellcheck-container"
+          });
+            /*Facets code starts here*/
+          this.addComponent("Facets", {
+            container: ".facets-container",
+            verticalKey: "locations",
+            searchOnChange: true
+          });
+        /*Facets code ends here*/
+           this.addComponent("VerticalResults", {
+            container: ".vertical-container",
+            verticalKey: "locations",
+            card: {
+              cardType: "Standard",
+             dataMappings: {
+                  title: (item) => '<h1>'+item.name+'</h1>',
+
+                  details: (item) =>  "<span style='color:blue; font-size:26px;'>" + "Address :" + "</span><br><p style='font-size:15px'>" + item.address.line1 + ","+ item.address.city + "," + item.address.region + " " + item.address.postalCode + "</p>" +
+                    "<span style='color:blue; font-size:26px;'>" + "Phone Number :" + "</span><br><p><a href="+'tel:'+item.mainPhone+">" +item.mainPhone+'</a></P><p>Related Menus' + item.c_relataredMenuToRestaurants + '</p>'
+
+                },
+                callsToAction: [
+                        {
+                          label: "<h3>Get Directions</h3>",
+                          icon: "directions",
+                          url: (item) => 'https://www.google.com/maps/dir/?api=1&destination=' + `${item.address.line2}`,
+                          analyticsEventType: "GET_DIRECTIONS",
+                          target: "_self"
+                        },
+                        {
+                          label: "<h3>View Resturants</h3>",
+                          icon: "office",
+                          url: (item) => `${item.slug}`,
+                          analyticsEventType: "",
+                          target: "_self"
+                        },
+                ]
+            }
+          });
+
+          this.addComponent("Map", {
+            container: ".map-container",
+            mapProvider: "mapbox",
+            height: "35%",
+            width: "100%",
+            showEmptyMap: false,
+            verticalKey: "locations",
+            apiKey:
+              "pk.eyJ1IjoieWV4dCIsImEiOiJqNzVybUhnIn0.hTOO5A1yqfpN42-_z_GuLw",
+              onPinClick: function (entity) {
+                   var markerName = entity.name;
+                   var markerAddressLOne = entity.address.line1;
+                   var markerAddressLtwo = entity.address.line2;
+                   var markerAddressLCity = entity.address.city;
+                   var markerAddressLPostalCode = entity.address.postalCode;
+                   var fullDetails =  "";
+                       fullDetails += '<hr><div>';
+                       fullDetails += '<h3>Marker details</h3>';
+                       fullDetails += '<h2>Name:- '+entity.name+'</h2>';      
+                       fullDetails += '<h4> Address :- '+entity.address.line1+', '+entity.address.city+','+entity.address.region+'<h4>';
+                       fullDetails += '<h4>Postal Code : - '+entity.address.postalCode+'</h4>';
+                       console.log(markerAddressLtwo);
+                      fullDetails += '<a href="https://www.google.com/maps/dir/?api=1&destination='+markerAddressLtwo+'">';
+                      fullDetails += '<h3>Get Direction</h3>';
+                      fullDetails += '</a>';
+                      fullDetails += '<a href="'+entity.slug+'">';
+                      fullDetails += '<h3>View Restaurants</h3>';
+                      fullDetails += '</a>';
+                      fullDetails += '</div><hr>';
+                      $("#infoWindow").html(fullDetails);  
+                    },
+
+         });
+        }
+      });
+    </script>
+  </body>
+</html>
