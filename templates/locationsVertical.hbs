@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Locations Vertical</title>
+    {{>nofollow}}
     <!-- JS Links -->
     <script src="https://assets.sitescdn.net/answers/v1/answerstemplates.compiled.min.js"></script>
     <script src="https://assets.sitescdn.net/answers/v1/answers.js"></script>
@@ -43,6 +44,7 @@
     <div class="answers">
       <div class="searchbar-container"></div>
       <div class="navigation-container"></div>
+      <div class="directanswer-container"></div>
       <div class="map-container" style="min-height: 19.375rem;"></div>
       <div class="infowindow" id="infoWindow"></div>
       <!-- <div id="map-info"></div> -->
@@ -52,7 +54,7 @@
         <div class="results-layout">
           <div class="spellcheck-container"></div>
           <div class="vertical-container"></div>
-          
+          <div class="question-submission-container"></div>
           <div class="locationbias-container"></div>
         </div>
       </div>
@@ -119,7 +121,18 @@
           this.addComponent("SearchBar", {
             container: ".searchbar-container",
             allowEmptySearch: true,
-            verticalKey: "locations"
+            verticalKey: "locations",
+            placeholderText: "Type your 'query' here"
+          });
+          this.addComponent("QASubmission", {
+            // Required, the selector for the container element where the component will be injected
+            container: ".question-submission-container",
+            entityId: "org-1",
+            privacyPolicyUrl: "https://mybiz.com/policy",
+          
+          });
+          this.addComponent("DirectAnswer", {
+            container: ".directanswer-container",
           });
            this.addComponent("Navigation", {
             container: ".navigation-container"
@@ -164,6 +177,7 @@
                 ]
             }
           });
+
 
           this.addComponent("Map", {
             container: ".map-container",

@@ -11,6 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Offers Vertical</title>
     <!-- JS Links -->
+    {{>nofollow}}
     <script src="https://assets.sitescdn.net/answers/v1/answerstemplates.compiled.min.js"></script>
     <script src="https://assets.sitescdn.net/answers/v1/answers.js"></script>
     <link
@@ -38,12 +39,14 @@
       <div class="searchbar-layout">
         <div class="searchbar-container"></div>
         <div class="navigation-container"></div>
+        <div class="directanswer-container"></div>
       </div>
       <div class="filters-and-results-layout">
         <div class="facets-container"></div>
         <div class="results-layout">
           <div class="spellcheck-container"></div>
           <div class="vertical-container"></div>
+          <div class="question-submission-container"></div>
           <div class="locationbias-container"></div>
         </div>
       </div>
@@ -101,10 +104,21 @@
           // init components
           this.addComponent("SearchBar", {
             container: ".searchbar-container",
-            verticalKey: "prezzo_offers"
+            verticalKey: "prezzo_offers",
+            placeholderText: "Type your 'query' here"
           });
           this.addComponent("Navigation", {
             container: ".navigation-container"
+          });
+          this.addComponent("DirectAnswer", {
+            container: ".directanswer-container",
+          });
+          this.addComponent("QASubmission", {
+            // Required, the selector for the container element where the component will be injected
+            container: ".question-submission-container",
+            entityId: "org-1",
+            privacyPolicyUrl: "https://mybiz.com/policy",
+          
           });
           this.addComponent("SpellCheck", {
             container: ".spellcheck-container"

@@ -12,6 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Answers Test Experience</title>
     <!-- Answers CSS-->
+    {{>nofollow}}
     <link
       rel="stylesheet"
       type="text/css"
@@ -37,6 +38,7 @@
     <div class="directanswer-container"></div>
     <div class="spellcheck-container"></div>
     <div class="universal-container"></div>
+    <div class="question-submission-container"></div>
     <div class="locationbias-container"></div>
   </div>
 
@@ -99,7 +101,8 @@
         // init components
         this.addComponent("SearchBar", {
           container: ".searchbar-container",
-          allowEmptySearch: true
+          allowEmptySearch: true,
+          placeholderText: "Type your 'query' here"
         });
         this.addComponent("Navigation", {
           container: ".navigation-container",
@@ -110,6 +113,13 @@
         this.addComponent("DirectAnswer", {
           container: ".directanswer-container",
         });
+        this.addComponent("QASubmission", {
+            // Required, the selector for the container element where the component will be injected
+            container: ".question-submission-container",
+            entityId: "org-1",
+            privacyPolicyUrl: "https://mybiz.com/policy",
+          
+          });
         this.addComponent("UniversalResults", {
           container: ".universal-container",
           config: {
@@ -190,6 +200,9 @@
             apiKey:
               "pk.eyJ1IjoieWV4dCIsImEiOiJqNzVybUhnIn0.hTOO5A1yqfpN42-_z_GuLw"
          });
+        this.addComponent("LocationBias", {
+            container: ".locationbias-container"
+          });
       }
     });
   </script>
